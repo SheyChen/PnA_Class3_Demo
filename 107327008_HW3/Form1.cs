@@ -18,25 +18,12 @@ namespace _107327008_HW3
         Graphics myGraph;
         Rectangle rectCir = new Rectangle(0, 0, 100, 200);
         Point CenterPoint;
-        AxisVector axisVector = new AxisVector();
         Matrix3D MatrixAng = new Matrix3D();
+        Matrix3D AxisVec = new Matrix3D();
         double[] Arm1P, Arm2P;
         int i = 1;
 
-        public class AxisVector
-        {
-            public double[] Xvector;
-            public double[] Yvector;
-            public double[] Zvector;
-
-            public AxisVector()
-            {
-                Xvector = new double[] { 100, 0, 0 };
-                Yvector = new double[] { 0, 100, 0 };
-                Zvector = new double[] { 0, 0, 100 };
-            }
-
-        }   //存放坐標軸的Class
+      
         public Form1()
         {
             InitializeComponent();
@@ -60,6 +47,9 @@ namespace _107327008_HW3
             textBox_Arm1_X.Text = "0"; textBox_Arm1_Y.Text = "0"; textBox_Arm1_Z.Text = "100";
             textBox_Arm2_X.Text = "0"; textBox_Arm2_Y.Text = "100"; textBox_Arm2_Z.Text = "0";
             textBox_Arm3_X.Text = "100"; textBox_Arm3_Y.Text = "0"; textBox_Arm3_Z.Text = "0";
+            AxisVec.Value[0] = new double[] { 100, 0, 0 };          //定義初始X座標軸
+            AxisVec.Value[1] = new double[] { 0, 100, 0 };          //定義初始Y座標軸
+            AxisVec.Value[2] = new double[] { 0, 0, 100 };          //定義初始Z座標軸
 
         }
         private void Button_PanelInitial_Click(object sender, EventArgs e)
@@ -71,10 +61,12 @@ namespace _107327008_HW3
             Axis_X.Visible = Axis_Y.Visible = true;                                 //開啟坐標軸標示
             Axis_X.Location = new Point(CenterPoint.X + 120, CenterPoint.Y - 10);   //給定標示座標
             Axis_Y.Location = new Point(CenterPoint.X, CenterPoint.Y - 120);
+            /*-----初始化-----*/
             textBox_Cx.Text = textBox_Cy.Text = textBox_Cr.Text = "0";
             textBox_XAngle.Text = textBox_YAngle.Text = textBox_ZAngle.Text = "0";
-
-            axisVector = new AxisVector();
+            AxisVec.Value[0] = new double[] { 100, 0, 0 };
+            AxisVec.Value[1] = new double[] { 0, 100, 0 };
+            AxisVec.Value[2] = new double[] { 0, 0, 100 };
             MatrixAng.Value[0] = new double[] { 1, 0, 0 };
             MatrixAng.Value[1] = new double[] { 0, 1, 0 };
             MatrixAng.Value[2] = new double[] { 0, 0, 1 };
@@ -85,7 +77,7 @@ namespace _107327008_HW3
             double deltXAng, deltYAng, deltZAng;
             double Deg2Rad = Math.PI / 180.0;
 
-            deltXAng = Convert.ToDouble(textBox_XAngle.Text) * Deg2Rad;
+            deltXAng = Convert.ToDouble(textBox_XAngle.Text) * -Deg2Rad;
             deltYAng = Convert.ToDouble(textBox_YAngle.Text) * Deg2Rad;
             deltZAng = Convert.ToDouble(textBox_ZAngle.Text) * Deg2Rad;
             Matrix3D MatrixAngX = new Matrix3D();                                //宣告X軸的轉換矩陣
@@ -107,14 +99,13 @@ namespace _107327008_HW3
             MatrixAng2 = Matrix3D.MatrixMult(MatrixAngY,MatrixAngZ);
             MatrixAng2 = Matrix3D.MatrixMult(MatrixAngX,MatrixAng2);        //把三個轉換矩陣乘起來
             MatrixAng = Matrix3D.MatrixMult(MatrixAng, MatrixAng2);
-            axisVector.Xvector = transView(MatrixAng2, axisVector.Xvector);    //轉換X軸
-            drawLine(penBlue, 0, 0, axisVector.Xvector[0], axisVector.Xvector[1]);
-            axisVector.Yvector = transView(MatrixAng2, axisVector.Yvector);    //轉換Y軸
-            drawLine(penGreen, 0, 0, axisVector.Yvector[0], axisVector.Yvector[1]);
-            axisVector.Zvector = transView(MatrixAng2, axisVector.Zvector);    //轉換Z軸
-            drawLine(penYellow, 0, 0, axisVector.Zvector[0], axisVector.Zvector[1]);
 
-            textBox_XAngle.Text = textBox_YAngle.Text = textBox_ZAngle.Text = "0";
+            AxisVec = Matrix3D.MatrixMult(MatrixAng2, AxisVec);
+            drawLine(penBlue, 0, 0, AxisVec.Value[0][0], AxisVec.Value[0][1]);
+            drawLine(penGreen, 0, 0, AxisVec.Value[1][0], AxisVec.Value[1][1]);
+            drawLine(penYellow, 0, 0, AxisVec.Value[2][0], AxisVec.Value[2][1]);
+
+            textBox_XAngle.Text = textBox_YAngle.Text = textBox_ZAngle.Text = "0";  //初始化
         }
         private void Button_DrawCircle_Click(object sender, EventArgs e)
         {

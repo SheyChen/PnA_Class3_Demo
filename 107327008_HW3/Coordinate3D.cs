@@ -72,7 +72,7 @@ namespace Coordinate3D
     //建立三維4*4方陣類別
     public class Matrix3D
     {
-        public double[][] Value = new double[4][];
+        public double[][] Value = new double[3][];
         public int Length()
         {
             return Value.Length;
