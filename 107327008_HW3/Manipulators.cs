@@ -7,6 +7,7 @@ using Coordinate3D;
 
 namespace Manipulators
 {
+    //建立Puma機器手臂類別
     public class Puma
     {
         public Point3D Base_pt;
@@ -43,6 +44,7 @@ namespace Manipulators
             this.arm3_4 = Point3D.Distance(_pt3, _pt4);
         }
         
+        //判斷手臂是否符合Puma結構
         public bool IsPuma()
         {
             return (Vector3D.IsVertical(this.armb_1, this.arm1_2)
@@ -52,6 +54,7 @@ namespace Manipulators
         
 
     }
+    //建立Scara機器手臂類別
     public class Scara
     {
         public Point3D Base_pt;
@@ -81,6 +84,8 @@ namespace Manipulators
             this.arm1_2 = Point3D.Distance(_pt1, _pt2);
             this.arm2_3 = Point3D.Distance(_pt2, _pt3);
         }
+
+        //判斷手臂是否符合Scara結構
         public bool IsScara()
         {
             return (Vector3D.IsVertical(this.armb_1, this.arm1_2)
