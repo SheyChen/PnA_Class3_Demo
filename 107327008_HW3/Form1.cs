@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Coordinate3D;
+using Manipulators;
 
 namespace _107327008_HW3
 {
@@ -55,6 +56,10 @@ namespace _107327008_HW3
             MatrixAng.Value[0] = new double[] { 1, 0, 0 };
             MatrixAng.Value[1] = new double[] { 0, 1, 0 };
             MatrixAng.Value[2] = new double[] { 0, 0, 1 };
+            textBox_Arm1_X.Text = "0"; textBox_Arm1_Y.Text = "0"; textBox_Arm1_Z.Text = "100";
+            textBox_Arm2_X.Text = "0"; textBox_Arm2_Y.Text = "100"; textBox_Arm2_Z.Text = "0";
+            textBox_Arm3_X.Text = "100"; textBox_Arm3_Y.Text = "0"; textBox_Arm3_Z.Text = "0";
+
         }
         private void Button_PanelInitial_Click(object sender, EventArgs e)
         {
@@ -144,6 +149,25 @@ namespace _107327008_HW3
             Arm1P = drawArmOnView(MatrixAng,Arm1);
         }
 
+        private void button_DrawScara_Click(object sender, EventArgs e)
+        {
+            Scara s_arm = new Scara();
+            s_arm.Base_pt = new Point3D(0, 0, 0);
+            s_arm.pt1 = new Point3D(Convert.ToDouble(textBox_Arm1_X.Text),
+                                    Convert.ToDouble(textBox_Arm1_Y.Text),
+                                    Convert.ToDouble(textBox_Arm1_Z.Text));
+            s_arm.pt2 = new Point3D(s_arm.pt1.X + Convert.ToDouble(textBox_Arm2_X.Text),
+                                    s_arm.pt1.Y + Convert.ToDouble(textBox_Arm2_Y.Text),
+                                    s_arm.pt1.Z + Convert.ToDouble(textBox_Arm2_Z.Text));
+            s_arm.pt3 = new Point3D(s_arm.pt2.X + Convert.ToDouble(textBox_Arm3_X.Text),
+                                    s_arm.pt2.Y + Convert.ToDouble(textBox_Arm3_Y.Text),
+                                    s_arm.pt2.Z + Convert.ToDouble(textBox_Arm3_Z.Text));
+            s_arm.armb_1 = Coordinate3D.Point3D.Distance(s_arm.Base_pt, s_arm.pt1);
+            s_arm.arm1_2 = Coordinate3D.Point3D.Distance(s_arm.pt1, s_arm.pt2);
+            s_arm.arm2_3 = Coordinate3D.Point3D.Distance(s_arm.pt2, s_arm.pt3);
+            //DrawScara_Paint(sender, null, s_arm);
+        }
+
         private void Button_DrawArm2_Click(object sender, EventArgs e)
         {
             Point3D Arm2 = new Point3D();
@@ -223,5 +247,23 @@ namespace _107327008_HW3
             drawCircle(penRed, viewVec1[0], viewVec1[1], rad);
             return viewVec1;
         }
+
+        /*
+        private void DrawScara_Paint(object sender, EventArgs e, Scara s_arm)
+        {
+            panel_draw_Paint(sender, null);
+            Button_ChangeViewAngle_Click(sender, null);
+            Point3D Arm1 = new Point3D();
+            Arm1.X = Convert.ToDouble(textBox_ArmX.Text);
+            Arm1.Y = Convert.ToDouble(textBox_ArmY.Text);
+            Arm1.Z = Convert.ToDouble(textBox_ArmZ.Text);
+            Arm1P = drawArmOnView(MatrixAng, Arm1);
+            double[] Arm_Base_vect = new double[] { s_arm.armb_1.X, s_arm.armb_1.Y, s_arm.armb_1.Z };
+            double[] viewVec1 = transView(Arm1P, Arm_Base_vect);
+            drawLine(penBlue, 0, 0, viewVec1[0], viewVec1[1]);
+            drawCircle(penRed, viewVec1[0], viewVec1[1], rad);
+
+        }
+        */
     }
 }

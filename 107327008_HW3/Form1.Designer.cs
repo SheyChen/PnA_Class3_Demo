@@ -68,7 +68,7 @@
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.button_DrawScara = new System.Windows.Forms.Button();
             this.label13 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
@@ -507,7 +507,7 @@
             this.groupBox5.Controls.Add(this.textBox_Arm3_X);
             this.groupBox5.Controls.Add(this.textBox_Arm2_X);
             this.groupBox5.Controls.Add(this.textBox_Arm1_X);
-            this.groupBox5.Controls.Add(this.button1);
+            this.groupBox5.Controls.Add(this.button_DrawScara);
             this.groupBox5.Controls.Add(this.label13);
             this.groupBox5.Controls.Add(this.label14);
             this.groupBox5.Controls.Add(this.label15);
@@ -518,15 +518,16 @@
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Scara手臂操作";
             // 
-            // button1
+            // button_DrawScara
             // 
-            this.button1.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.button1.Location = new System.Drawing.Point(36, 150);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(136, 31);
-            this.button1.TabIndex = 12;
-            this.button1.Text = "繪出手臂";
-            this.button1.UseVisualStyleBackColor = true;
+            this.button_DrawScara.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.button_DrawScara.Location = new System.Drawing.Point(36, 150);
+            this.button_DrawScara.Name = "button_DrawScara";
+            this.button_DrawScara.Size = new System.Drawing.Size(136, 31);
+            this.button_DrawScara.TabIndex = 12;
+            this.button_DrawScara.Text = "繪出Scara手臂";
+            this.button_DrawScara.UseVisualStyleBackColor = true;
+            this.button_DrawScara.Click += new System.EventHandler(this.button_DrawScara_Click);
             // 
             // label13
             // 
@@ -826,7 +827,7 @@
         private System.Windows.Forms.TextBox textBox_Arm3_X;
         private System.Windows.Forms.TextBox textBox_Arm2_X;
         private System.Windows.Forms.TextBox textBox_Arm1_X;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button_DrawScara;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label15;
