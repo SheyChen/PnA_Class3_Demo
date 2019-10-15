@@ -21,6 +21,7 @@ namespace _107327008_HW3
         AxisVector axisVector = new AxisVector();
         Matrix3D MatrixAng = new Matrix3D();
         double[] Arm1P, Arm2P;
+        int i = 1;
 
         public class AxisVector
         {
