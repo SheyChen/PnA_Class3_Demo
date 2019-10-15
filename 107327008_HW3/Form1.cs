@@ -12,11 +12,26 @@ namespace _107327008_HW3
 {
     public partial class Form1 : Form
     {
-        Pen penRed, penBlue, penGreen, penGray, penMag;
+        Pen penRed, penBlue, penGreen, penGray, penMag, penYellow;
         Graphics myGraph;
         Rectangle rectCir = new Rectangle(0, 0, 100, 200);
         Point CenterPoint;
+        AxisVector axisVector = new AxisVector();
 
+        public class AxisVector
+        {
+            public double[] Xvector;
+            public double[] Yvector;
+            public double[] Zvector;
+
+            public AxisVector()
+            {
+                Xvector = new double[] { 100, 0, 0 };
+                Yvector = new double[] { 0, 100, 0 };
+                Zvector = new double[] { 0, 0, 100 };
+            }
+
+        }   //存放坐標軸的Class
         public Form1()
         {
             InitializeComponent();
@@ -28,6 +43,7 @@ namespace _107327008_HW3
             penBlue = new Pen(Color.Blue, 2);
             penGray = new Pen(Color.Gray, 1);
             penMag = new Pen(Color.Magenta);
+            penYellow = new Pen(Color.Yellow, 2);
             myGraph = this.panel_Draw.CreateGraphics();
             CenterPoint = new Point(panel_Draw.Location.X + (panel_Draw.Width / 2), panel_Draw.Location.Y + (panel_Draw.Height / 2));
             Axis_X.Visible = Axis_Y.Visible = Axis_Z.Visible = false;                               //關閉坐標軸標示
@@ -41,9 +57,10 @@ namespace _107327008_HW3
             Axis_X.Visible = Axis_Y.Visible = true;                                 //開啟坐標軸標示
             Axis_X.Location = new Point(CenterPoint.X + 120, CenterPoint.Y - 10);   //給定標示座標
             Axis_Y.Location = new Point(CenterPoint.X, CenterPoint.Y - 120);
-
             textBox_Cx.Text = textBox_Cy.Text = textBox_Cr.Text = "0";
-            textBox_XAngle.Text = textBox_YAngle.Text = textBox_ZAngle.Text = "0";            
+            textBox_XAngle.Text = textBox_YAngle.Text = textBox_ZAngle.Text = "0";
+
+            //axisVector = new AxisVector();
         }
         private void Button_ChangeViewAngle_Click(object sender, EventArgs e)
         {
@@ -75,15 +92,14 @@ namespace _107327008_HW3
             };  //宣告Z軸的轉換矩陣
             double[][] MatrixAng = MatrixMult(MatrixAngX,MatrixAngY);
             MatrixAng = MatrixMult(MatrixAng,MatrixAngZ);                   //把三個轉換矩陣乘起來
-            double[] viewVectorX = transView(MatrixAng, 100, 0, 0);          //轉換X軸
-            drawLine(penBlue, 0, 0, viewVectorX[0], viewVectorX[1]);
-            double[] viewVectorY = transView(MatrixAng, 0, 100, 0);          //轉換Y軸
-            drawLine(penGreen, 0, 0, viewVectorY[0], viewVectorY[1]);
-            double[] viewVectorZ = transView(MatrixAng, 0, 0, 100);          //轉換Z軸
-            drawLine(penRed, 0, 0, viewVectorZ[0], viewVectorZ[1]);
+            axisVector.Xvector = transView(MatrixAng, axisVector.Xvector);    //轉換X軸
+            drawLine(penBlue, 0, 0, axisVector.Xvector[0], axisVector.Xvector[1]);
+            axisVector.Yvector = transView(MatrixAng, axisVector.Yvector);    //轉換Y軸
+            drawLine(penGreen, 0, 0, axisVector.Yvector[0], axisVector.Yvector[1]);
+            axisVector.Zvector = transView(MatrixAng, axisVector.Zvector);    //轉換Z軸
+            drawLine(penYellow, 0, 0, axisVector.Zvector[0], axisVector.Zvector[1]);
 
         }
-
         private void Button_DrawCircle_Click(object sender, EventArgs e)
         {
             panel_draw_Paint(sender, null);                                         //讓畫布觸發
@@ -153,20 +169,20 @@ namespace _107327008_HW3
             }
             return result;
         }  
-        public double[] transView(double[][] matA, double x, double y, double z)
+        public double[] transView(double[][] matA, double[] vectA)
         {
-            double[] VectorOut = new double[2];
+            double[] VectorOut = new double[3];
             double[] VectorNew = new double[3] { 0, 0, 0 };
-            double[] Vector = new double[3] { x, y, z };
             for (int i = 0; i < VectorNew.Length; i++)
             {
                 for (int j = 0; j < VectorNew.Length; j++)
                 {
-                    VectorNew[i] += matA[i][j] * Vector[j];
+                    VectorNew[i] += matA[i][j] * vectA[j];
                 }
             }
             VectorOut[0] = VectorNew[0];
             VectorOut[1] = VectorNew[1];
+            VectorOut[2] = VectorNew[2];
             return VectorOut;
         }
     }
