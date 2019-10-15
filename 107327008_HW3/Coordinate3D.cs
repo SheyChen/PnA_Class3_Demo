@@ -36,14 +36,30 @@ namespace Coordinate3D
     {
         public Vector3D() : base(0, 0, 0) { }
         public Vector3D(double X, double Y, double Z) : base(X, Y, Z) { }
+
+        public static double Vector_Dot(Vector3D vect1, Vector3D vect2)
+        {
+            double ans;
+            ans = vect1.X*vect2.X + vect1.Y*vect2.Y + vect1.Z*vect2.Z ;
+            return ans;
+        }
+        public static Vector3D Vector_Cross(Vector3D vect1, Vector3D vect2)
+        {
+            Vector3D ans = new Vector3D();
+            ans.X = vect1.Y * vect2.Z - vect1.Z * vect2.Y;
+            ans.Y = vect1.Z * vect2.X - vect1.X * vect2.Z;
+            ans.Z = vect1.X * vect2.Y - vect1.Y * vect2.X;
+            return ans;
+        }
     }
     public class Matrix3D
     {
-        public double[][] Value;
+        public double[][] Value = new double[3][];
         public int Length()
         {
             return Value.Length;
         }
+
         public static Matrix3D MatrixMult(Matrix3D matrix1, Matrix3D matrix2)
         {
             int m = matrix1.Length(), n = matrix2.Length(), p = matrix2.Value[2].Length;

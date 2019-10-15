@@ -38,6 +38,14 @@ namespace Manipulators
                 this.arm1_2 = Point3D.Distance(_pt1, _pt2);
                 this.arm2_3 = Point3D.Distance(_pt2, _pt3);
         }
+        /*
+        public bool IsPuma()
+        {
+            bool ans = false;
+
+            return ans;
+        }
+        */
 
     }
     public class Scara
