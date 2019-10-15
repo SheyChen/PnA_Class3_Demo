@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Manipulators;
+using Coordinate3D;
 
 namespace _107327008_HW3
 {
@@ -55,31 +57,33 @@ namespace _107327008_HW3
             deltXAng = Convert.ToDouble(textBox_XAngle.Text) * Deg2Rad;
             deltYAng = Convert.ToDouble(textBox_YAngle.Text) * Deg2Rad;
             deltZAng = Convert.ToDouble(textBox_ZAngle.Text) * Deg2Rad;
-            double[][] MatrixAngX = new double[][]
-            {
-                new double[] { 1, 0, 0 },
-                new double[] { 0, Math.Cos(deltXAng), Math.Sin(deltXAng) },
-                new double[] { 0, -Math.Sin(deltXAng), Math.Cos(deltXAng) }
-            };   //宣告X軸的轉換矩陣
-            double[][] MatrixAngY = new double[][]
-            { 
-                new double[] { Math.Cos(deltYAng), 0, -Math.Sin(deltYAng) }, 
-                new double[] { 0, 1, 0 }, 
-                new double[] { Math.Sin(deltYAng), 0, Math.Cos(deltYAng) }
-            };  //宣告Y軸的轉換矩陣
-            double[][] MatrixAngZ = new double[][] 
-            { 
-                new double[] { Math.Cos(deltZAng), Math.Sin(deltZAng), 0 },
-                new double[] { -Math.Sin(deltZAng), Math.Cos(deltZAng), 0 },
-                new double[] { 0, 0, 1 }
-            };  //宣告Z軸的轉換矩陣
-            double[][] MatrixAng = MatrixMult(MatrixAngX,MatrixAngY);
-            MatrixAng = MatrixMult(MatrixAng,MatrixAngZ);                   //把三個轉換矩陣乘起來
-            double[] viewVectorX = transView(MatrixAng, 100, 0, 0);          //轉換X軸
+
+
+            //宣告X軸的轉換矩陣
+            Matrix3D MatrixAngX = new Matrix3D();
+            MatrixAngX.Value[0] = new double[] { 1, 0, 0 };
+            MatrixAngX.Value[1] = new double[] { 0, Math.Cos(deltXAng), Math.Sin(deltXAng) };
+            MatrixAngX.Value[2] = new double[] { 0, -Math.Sin(deltXAng), Math.Cos(deltXAng) };
+            //宣告Y軸的轉換矩陣
+            Matrix3D MatrixAngY = new Matrix3D();
+            MatrixAngY.Value[0] = new double[] { Math.Cos(deltYAng), 0, -Math.Sin(deltYAng) };
+            MatrixAngY.Value[1] = new double[] { 0, 1, 0 };
+            MatrixAngY.Value[2] = new double[] { Math.Sin(deltYAng), 0, Math.Cos(deltYAng) };
+            //宣告Z軸的轉換矩陣
+            Matrix3D MatrixAngZ = new Matrix3D();
+            MatrixAngZ.Value[0] = new double[] { Math.Cos(deltZAng), Math.Sin(deltZAng), 0 };
+            MatrixAngZ.Value[1] = new double[] { -Math.Sin(deltZAng), Math.Cos(deltZAng), 0 };
+            MatrixAngZ.Value[2] = new double[] { 0, 0, 1 };
+
+            Matrix3D MatrixAng = new Matrix3D();
+            MatrixAng = Matrix3D.MatrixMult(MatrixAngX, MatrixAngY);
+            MatrixAng = Matrix3D.MatrixMult(MatrixAng, MatrixAngZ);               //把三個轉換矩陣乘起來
+
+            double[] viewVectorX = transView(MatrixAng.Value, 100, 0, 0);          //轉換X軸
             drawLine(penBlue, 0, 0, viewVectorX[0], viewVectorX[1]);
-            double[] viewVectorY = transView(MatrixAng, 0, 100, 0);          //轉換Y軸
+            double[] viewVectorY = transView(MatrixAng.Value, 0, 100, 0);          //轉換Y軸
             drawLine(penGreen, 0, 0, viewVectorY[0], viewVectorY[1]);
-            double[] viewVectorZ = transView(MatrixAng, 0, 0, 100);          //轉換Z軸
+            double[] viewVectorZ = transView(MatrixAng.Value, 0, 0, 100);          //轉換Z軸
             drawLine(penRed, 0, 0, viewVectorZ[0], viewVectorZ[1]);
 
         }
@@ -134,25 +138,7 @@ namespace _107327008_HW3
             myGraph.DrawLine(penGray, CenterPoint.X, 0, CenterPoint.X, panel_Draw.Height);
             myGraph.DrawLine(penGray, 0, CenterPoint.Y, panel_Draw.Width, CenterPoint.Y);
         }
-        private double[][] MatrixMult(double[][] matrix1, double[][] matrix2)
-        {
-            int m = matrix1.Length, n = matrix2.Length, p = matrix2[0].Length;
-            double[][] result = new double[m][];
-            for (int i = 0; i < result.Length; i++)
-            {
-                result[i] = new double[p];
-            }            for (int i = 0; i < m; i++)
-            {
-                for (int j = 0; j < p; j++)
-                {
-                    for (int k = 0; k < n; k++)
-                    {
-                        result[i][j] += (matrix1[i][k] * matrix2[k][j]);
-                    }
-                }
-            }
-            return result;
-        }  
+
         public double[] transView(double[][] matA, double x, double y, double z)
         {
             double[] VectorOut = new double[2];
