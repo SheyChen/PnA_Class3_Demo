@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Coordinate3D;
 
 namespace _107327008_HW3
 {
@@ -17,6 +18,8 @@ namespace _107327008_HW3
         Rectangle rectCir = new Rectangle(0, 0, 100, 200);
         Point CenterPoint;
         AxisVector axisVector = new AxisVector();
+        Matrix3D MatrixAng = new Matrix3D();
+        double[] Arm1P, Arm2P;
 
         public class AxisVector
         {
@@ -47,6 +50,11 @@ namespace _107327008_HW3
             myGraph = this.panel_Draw.CreateGraphics();
             CenterPoint = new Point(panel_Draw.Location.X + (panel_Draw.Width / 2), panel_Draw.Location.Y + (panel_Draw.Height / 2));
             Axis_X.Visible = Axis_Y.Visible = Axis_Z.Visible = false;                               //關閉坐標軸標示
+            textBox_Cx.Text = textBox_Cy.Text = textBox_Cr.Text = "0";
+            textBox_XAngle.Text = textBox_YAngle.Text = textBox_ZAngle.Text = "0";
+            MatrixAng.Value[0] = new double[] { 1, 0, 0 };
+            MatrixAng.Value[1] = new double[] { 0, 1, 0 };
+            MatrixAng.Value[2] = new double[] { 0, 0, 1 };
         }
         private void Button_PanelInitial_Click(object sender, EventArgs e)
         {
@@ -60,45 +68,47 @@ namespace _107327008_HW3
             textBox_Cx.Text = textBox_Cy.Text = textBox_Cr.Text = "0";
             textBox_XAngle.Text = textBox_YAngle.Text = textBox_ZAngle.Text = "0";
 
-            //axisVector = new AxisVector();
+            axisVector = new AxisVector();
+            MatrixAng.Value[0] = new double[] { 1, 0, 0 };
+            MatrixAng.Value[1] = new double[] { 0, 1, 0 };
+            MatrixAng.Value[2] = new double[] { 0, 0, 1 };
         }
         private void Button_ChangeViewAngle_Click(object sender, EventArgs e)
         {
-            
-            panel_draw_Paint(sender, null);                                         //讓畫布觸發
+            panel_draw_Paint(sender, null);                                       //讓畫布觸發
             double deltXAng, deltYAng, deltZAng;
             double Deg2Rad = Math.PI / 180.0;
 
             deltXAng = Convert.ToDouble(textBox_XAngle.Text) * Deg2Rad;
             deltYAng = Convert.ToDouble(textBox_YAngle.Text) * Deg2Rad;
             deltZAng = Convert.ToDouble(textBox_ZAngle.Text) * Deg2Rad;
-            double[][] MatrixAngX = new double[][]
-            {
-                new double[] { 1, 0, 0 },
-                new double[] { 0, Math.Cos(deltXAng), Math.Sin(deltXAng) },
-                new double[] { 0, -Math.Sin(deltXAng), Math.Cos(deltXAng) }
-            };   //宣告X軸的轉換矩陣
-            double[][] MatrixAngY = new double[][]
-            { 
-                new double[] { Math.Cos(deltYAng), 0, -Math.Sin(deltYAng) }, 
-                new double[] { 0, 1, 0 }, 
-                new double[] { Math.Sin(deltYAng), 0, Math.Cos(deltYAng) }
-            };  //宣告Y軸的轉換矩陣
-            double[][] MatrixAngZ = new double[][] 
-            { 
-                new double[] { Math.Cos(deltZAng), Math.Sin(deltZAng), 0 },
-                new double[] { -Math.Sin(deltZAng), Math.Cos(deltZAng), 0 },
-                new double[] { 0, 0, 1 }
-            };  //宣告Z軸的轉換矩陣
-            double[][] MatrixAng = MatrixMult(MatrixAngX,MatrixAngY);
-            MatrixAng = MatrixMult(MatrixAng,MatrixAngZ);                   //把三個轉換矩陣乘起來
-            axisVector.Xvector = transView(MatrixAng, axisVector.Xvector);    //轉換X軸
+            Matrix3D MatrixAngX = new Matrix3D();                                //宣告X軸的轉換矩陣
+            MatrixAngX.Value[0] = new double[] { 1, 0, 0 };
+            MatrixAngX.Value[1] = new double[] { 0, Math.Cos(deltXAng), Math.Sin(deltXAng) };
+            MatrixAngX.Value[2] = new double[] { 0, -Math.Sin(deltXAng), Math.Cos(deltXAng) };
+
+            Matrix3D MatrixAngY = new Matrix3D();                                //宣告Y軸的轉換矩陣
+            MatrixAngY.Value[0] = new double[] { Math.Cos(deltYAng), 0, -Math.Sin(deltYAng) };
+            MatrixAngY.Value[1] = new double[] { 0, 1, 0 };
+            MatrixAngY.Value[2] = new double[] { Math.Sin(deltYAng), 0, Math.Cos(deltYAng) };
+
+            Matrix3D MatrixAngZ = new Matrix3D();                                 //宣告Z軸的轉換矩陣        
+            MatrixAngZ.Value[0] = new double[] { Math.Cos(deltZAng), Math.Sin(deltZAng), 0 };
+            MatrixAngZ.Value[1] = new double[] { -Math.Sin(deltZAng), Math.Cos(deltZAng), 0 };
+            MatrixAngZ.Value[2] = new double[] { 0, 0, 1 };
+
+            Matrix3D MatrixAng2 = new Matrix3D();
+            MatrixAng2 = Matrix3D.MatrixMult(MatrixAngY,MatrixAngZ);
+            MatrixAng2 = Matrix3D.MatrixMult(MatrixAngX,MatrixAng2);        //把三個轉換矩陣乘起來
+            MatrixAng = Matrix3D.MatrixMult(MatrixAng, MatrixAng2);
+            axisVector.Xvector = transView(MatrixAng2, axisVector.Xvector);    //轉換X軸
             drawLine(penBlue, 0, 0, axisVector.Xvector[0], axisVector.Xvector[1]);
-            axisVector.Yvector = transView(MatrixAng, axisVector.Yvector);    //轉換Y軸
+            axisVector.Yvector = transView(MatrixAng2, axisVector.Yvector);    //轉換Y軸
             drawLine(penGreen, 0, 0, axisVector.Yvector[0], axisVector.Yvector[1]);
-            axisVector.Zvector = transView(MatrixAng, axisVector.Zvector);    //轉換Z軸
+            axisVector.Zvector = transView(MatrixAng2, axisVector.Zvector);    //轉換Z軸
             drawLine(penYellow, 0, 0, axisVector.Zvector[0], axisVector.Zvector[1]);
 
+            textBox_XAngle.Text = textBox_YAngle.Text = textBox_ZAngle.Text = "0";
         }
         private void Button_DrawCircle_Click(object sender, EventArgs e)
         {
@@ -123,6 +133,27 @@ namespace _107327008_HW3
             
             
         }
+        private void Button_DrawArm_Click(object sender, EventArgs e)
+        {
+            panel_draw_Paint(sender, null);                                       //讓畫布觸發
+            Button_ChangeViewAngle_Click(sender, null);
+            Point3D Arm1 = new Point3D();
+            Arm1.X = Convert.ToDouble(textBox_ArmX.Text);
+            Arm1.Y = Convert.ToDouble(textBox_ArmY.Text);
+            Arm1.Z = Convert.ToDouble(textBox_ArmZ.Text);
+            Arm1P = drawArmOnView(MatrixAng,Arm1);
+        }
+
+        private void Button_DrawArm2_Click(object sender, EventArgs e)
+        {
+            Point3D Arm2 = new Point3D();
+            Arm2.X = Convert.ToDouble(textBox_Arm2X.Text);
+            Arm2.Y = Convert.ToDouble(textBox_Arm2Y.Text);
+            Arm2.Z = Convert.ToDouble(textBox_Arm2Z.Text);
+            Arm2P =  drawArmOnView(MatrixAng, Arm2);
+            drawLine(penMag,Arm1P[0], Arm1P[1], Arm2P[0], Arm2P[1]);
+        }
+
         public void drawCircle(Pen penX, double centerX, double centerY, double rad)
         {
             int cx = (int)centerX + CenterPoint.X;
@@ -150,7 +181,7 @@ namespace _107327008_HW3
             myGraph.DrawLine(penGray, CenterPoint.X, 0, CenterPoint.X, panel_Draw.Height);
             myGraph.DrawLine(penGray, 0, CenterPoint.Y, panel_Draw.Width, CenterPoint.Y);
         }
-        private double[][] MatrixMult(double[][] matrix1, double[][] matrix2)
+        /*private double[][] MatrixMult(double[][] matrix1, double[][] matrix2)
         {
             int m = matrix1.Length, n = matrix2.Length, p = matrix2[0].Length;
             double[][] result = new double[m][];
@@ -168,8 +199,8 @@ namespace _107327008_HW3
                 }
             }
             return result;
-        }  
-        public double[] transView(double[][] matA, double[] vectA)
+        }  */
+        public double[] transView(Matrix3D matA, double[] vectA)
         {
             double[] VectorOut = new double[3];
             double[] VectorNew = new double[3] { 0, 0, 0 };
@@ -177,13 +208,20 @@ namespace _107327008_HW3
             {
                 for (int j = 0; j < VectorNew.Length; j++)
                 {
-                    VectorNew[i] += matA[i][j] * vectA[j];
+                    VectorNew[i] += matA.Value[i][j] * vectA[j];
                 }
             }
-            VectorOut[0] = VectorNew[0];
-            VectorOut[1] = VectorNew[1];
-            VectorOut[2] = VectorNew[2];
-            return VectorOut;
+            return VectorNew;
+        }
+        public double[] drawArmOnView(Matrix3D matA, Point3D ArmP)
+        {
+            int rad = 6;
+            double[] Armvec = new double[] { ArmP.X, ArmP.Y, ArmP.Z };
+            double[] viewVec1 = transView(matA, Armvec);
+            
+            drawLine(penBlue, 0, 0, viewVec1[0], viewVec1[1]);
+            drawCircle(penRed, viewVec1[0], viewVec1[1], rad);
+            return viewVec1;
         }
     }
 }

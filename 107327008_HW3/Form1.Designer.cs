@@ -41,6 +41,8 @@
             this.Axis_Y = new System.Windows.Forms.Label();
             this.Axis_X = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button_Xup = new System.Windows.Forms.Button();
             this.button_ChangeViewAngle = new System.Windows.Forms.Button();
             this.textBox_ZAngle = new System.Windows.Forms.TextBox();
             this.textBox_YAngle = new System.Windows.Forms.TextBox();
@@ -49,12 +51,27 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.button_DrawArm = new System.Windows.Forms.Button();
+            this.textBox_ArmZ = new System.Windows.Forms.TextBox();
+            this.textBox_ArmY = new System.Windows.Forms.TextBox();
+            this.textBox_ArmX = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
             this.button_PanelInitial = new System.Windows.Forms.Button();
-            this.button_Xup = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.button_DrawArm2 = new System.Windows.Forms.Button();
+            this.textBox_Arm2Z = new System.Windows.Forms.TextBox();
+            this.textBox_Arm2Y = new System.Windows.Forms.TextBox();
+            this.textBox_Arm2X = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.panel_Draw.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.groupBox3.SuspendLayout();
+            this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -66,7 +83,7 @@
             this.groupBox1.Controls.Add(this.textBox_Cr);
             this.groupBox1.Controls.Add(this.textBox_Cy);
             this.groupBox1.Controls.Add(this.textBox_Cx);
-            this.groupBox1.Location = new System.Drawing.Point(907, 51);
+            this.groupBox1.Location = new System.Drawing.Point(711, 51);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(209, 139);
             this.groupBox1.TabIndex = 0;
@@ -143,7 +160,7 @@
             this.panel_Draw.Controls.Add(this.Axis_X);
             this.panel_Draw.Location = new System.Drawing.Point(12, 12);
             this.panel_Draw.Name = "panel_Draw";
-            this.panel_Draw.Size = new System.Drawing.Size(877, 646);
+            this.panel_Draw.Size = new System.Drawing.Size(678, 646);
             this.panel_Draw.TabIndex = 1;
             // 
             // Axis_Z
@@ -184,12 +201,32 @@
             this.groupBox2.Controls.Add(this.label6);
             this.groupBox2.Controls.Add(this.label5);
             this.groupBox2.Controls.Add(this.label4);
-            this.groupBox2.Location = new System.Drawing.Point(907, 196);
+            this.groupBox2.Location = new System.Drawing.Point(711, 196);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(209, 214);
             this.groupBox2.TabIndex = 0;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "旋轉視角";
+            // 
+            // button2
+            // 
+            this.button2.Font = new System.Drawing.Font("新細明體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.button2.Location = new System.Drawing.Point(160, 42);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(43, 19);
+            this.button2.TabIndex = 11;
+            this.button2.Text = ">";
+            this.button2.UseVisualStyleBackColor = true;
+            // 
+            // button_Xup
+            // 
+            this.button_Xup.Font = new System.Drawing.Font("新細明體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.button_Xup.Location = new System.Drawing.Point(115, 42);
+            this.button_Xup.Name = "button_Xup";
+            this.button_Xup.Size = new System.Drawing.Size(43, 19);
+            this.button_Xup.TabIndex = 3;
+            this.button_Xup.Text = "<";
+            this.button_Xup.UseVisualStyleBackColor = true;
             // 
             // button_ChangeViewAngle
             // 
@@ -255,17 +292,86 @@
             // 
             // groupBox3
             // 
-            this.groupBox3.Location = new System.Drawing.Point(907, 445);
+            this.groupBox3.Controls.Add(this.button_DrawArm);
+            this.groupBox3.Controls.Add(this.textBox_ArmZ);
+            this.groupBox3.Controls.Add(this.textBox_ArmY);
+            this.groupBox3.Controls.Add(this.textBox_ArmX);
+            this.groupBox3.Controls.Add(this.label9);
+            this.groupBox3.Controls.Add(this.label8);
+            this.groupBox3.Controls.Add(this.label7);
+            this.groupBox3.Location = new System.Drawing.Point(711, 416);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(209, 213);
+            this.groupBox3.Size = new System.Drawing.Size(209, 163);
             this.groupBox3.TabIndex = 1;
             this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "手臂位置";
+            this.groupBox3.Text = "手臂起始位置";
+            // 
+            // button_DrawArm
+            // 
+            this.button_DrawArm.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.button_DrawArm.Location = new System.Drawing.Point(36, 114);
+            this.button_DrawArm.Name = "button_DrawArm";
+            this.button_DrawArm.Size = new System.Drawing.Size(136, 31);
+            this.button_DrawArm.TabIndex = 12;
+            this.button_DrawArm.Text = "產生";
+            this.button_DrawArm.UseVisualStyleBackColor = true;
+            this.button_DrawArm.Click += new System.EventHandler(this.Button_DrawArm_Click);
+            // 
+            // textBox_ArmZ
+            // 
+            this.textBox_ArmZ.Location = new System.Drawing.Point(103, 86);
+            this.textBox_ArmZ.Name = "textBox_ArmZ";
+            this.textBox_ArmZ.Size = new System.Drawing.Size(100, 22);
+            this.textBox_ArmZ.TabIndex = 7;
+            // 
+            // textBox_ArmY
+            // 
+            this.textBox_ArmY.Location = new System.Drawing.Point(103, 56);
+            this.textBox_ArmY.Name = "textBox_ArmY";
+            this.textBox_ArmY.Size = new System.Drawing.Size(100, 22);
+            this.textBox_ArmY.TabIndex = 6;
+            // 
+            // textBox_ArmX
+            // 
+            this.textBox_ArmX.Location = new System.Drawing.Point(103, 27);
+            this.textBox_ArmX.Name = "textBox_ArmX";
+            this.textBox_ArmX.Size = new System.Drawing.Size(100, 22);
+            this.textBox_ArmX.TabIndex = 3;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label9.Location = new System.Drawing.Point(8, 89);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(93, 16);
+            this.label9.TabIndex = 5;
+            this.label9.Text = "手臂Z座標 : ";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label8.Location = new System.Drawing.Point(7, 58);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(95, 16);
+            this.label8.TabIndex = 4;
+            this.label8.Text = "手臂Y座標 : ";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label7.Location = new System.Drawing.Point(7, 29);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(95, 16);
+            this.label7.TabIndex = 3;
+            this.label7.Text = "手臂X座標 : ";
             // 
             // button_PanelInitial
             // 
             this.button_PanelInitial.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.button_PanelInitial.Location = new System.Drawing.Point(916, 12);
+            this.button_PanelInitial.Location = new System.Drawing.Point(720, 12);
             this.button_PanelInitial.Name = "button_PanelInitial";
             this.button_PanelInitial.Size = new System.Drawing.Size(194, 33);
             this.button_PanelInitial.TabIndex = 0;
@@ -273,31 +379,90 @@
             this.button_PanelInitial.UseVisualStyleBackColor = true;
             this.button_PanelInitial.Click += new System.EventHandler(this.Button_PanelInitial_Click);
             // 
-            // button_Xup
+            // groupBox4
             // 
-            this.button_Xup.Font = new System.Drawing.Font("新細明體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.button_Xup.Location = new System.Drawing.Point(115, 42);
-            this.button_Xup.Name = "button_Xup";
-            this.button_Xup.Size = new System.Drawing.Size(43, 19);
-            this.button_Xup.TabIndex = 3;
-            this.button_Xup.Text = "<";
-            this.button_Xup.UseVisualStyleBackColor = true;
+            this.groupBox4.Controls.Add(this.button_DrawArm2);
+            this.groupBox4.Controls.Add(this.textBox_Arm2Z);
+            this.groupBox4.Controls.Add(this.textBox_Arm2Y);
+            this.groupBox4.Controls.Add(this.textBox_Arm2X);
+            this.groupBox4.Controls.Add(this.label10);
+            this.groupBox4.Controls.Add(this.label11);
+            this.groupBox4.Controls.Add(this.label12);
+            this.groupBox4.Location = new System.Drawing.Point(935, 416);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(209, 163);
+            this.groupBox4.TabIndex = 13;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "手臂終點位置";
             // 
-            // button2
+            // button_DrawArm2
             // 
-            this.button2.Font = new System.Drawing.Font("新細明體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.button2.Location = new System.Drawing.Point(160, 42);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(43, 19);
-            this.button2.TabIndex = 11;
-            this.button2.Text = ">";
-            this.button2.UseVisualStyleBackColor = true;
+            this.button_DrawArm2.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.button_DrawArm2.Location = new System.Drawing.Point(36, 114);
+            this.button_DrawArm2.Name = "button_DrawArm2";
+            this.button_DrawArm2.Size = new System.Drawing.Size(136, 31);
+            this.button_DrawArm2.TabIndex = 12;
+            this.button_DrawArm2.Text = "產生";
+            this.button_DrawArm2.UseVisualStyleBackColor = true;
+            this.button_DrawArm2.Click += new System.EventHandler(this.Button_DrawArm2_Click);
+            // 
+            // textBox_Arm2Z
+            // 
+            this.textBox_Arm2Z.Location = new System.Drawing.Point(103, 86);
+            this.textBox_Arm2Z.Name = "textBox_Arm2Z";
+            this.textBox_Arm2Z.Size = new System.Drawing.Size(100, 22);
+            this.textBox_Arm2Z.TabIndex = 7;
+            // 
+            // textBox_Arm2Y
+            // 
+            this.textBox_Arm2Y.Location = new System.Drawing.Point(103, 56);
+            this.textBox_Arm2Y.Name = "textBox_Arm2Y";
+            this.textBox_Arm2Y.Size = new System.Drawing.Size(100, 22);
+            this.textBox_Arm2Y.TabIndex = 6;
+            // 
+            // textBox_Arm2X
+            // 
+            this.textBox_Arm2X.Location = new System.Drawing.Point(103, 27);
+            this.textBox_Arm2X.Name = "textBox_Arm2X";
+            this.textBox_Arm2X.Size = new System.Drawing.Size(100, 22);
+            this.textBox_Arm2X.TabIndex = 3;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label10.Location = new System.Drawing.Point(8, 89);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(93, 16);
+            this.label10.TabIndex = 5;
+            this.label10.Text = "手臂Z座標 : ";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label11.Location = new System.Drawing.Point(7, 58);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(95, 16);
+            this.label11.TabIndex = 4;
+            this.label11.Text = "手臂Y座標 : ";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label12.Location = new System.Drawing.Point(7, 29);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(95, 16);
+            this.label12.TabIndex = 3;
+            this.label12.Text = "手臂X座標 : ";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1128, 670);
+            this.ClientSize = new System.Drawing.Size(1156, 670);
+            this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.button_PanelInitial);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
@@ -312,6 +477,10 @@
             this.panel_Draw.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -342,6 +511,21 @@
         private System.Windows.Forms.Label Axis_X;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button_Xup;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Button button_DrawArm;
+        private System.Windows.Forms.TextBox textBox_ArmZ;
+        private System.Windows.Forms.TextBox textBox_ArmY;
+        private System.Windows.Forms.TextBox textBox_ArmX;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.Button button_DrawArm2;
+        private System.Windows.Forms.TextBox textBox_Arm2Z;
+        private System.Windows.Forms.TextBox textBox_Arm2Y;
+        private System.Windows.Forms.TextBox textBox_Arm2X;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label12;
     }
 }
 

@@ -39,7 +39,7 @@ namespace Coordinate3D
     }
     public class Matrix3D
     {
-        public double[][] Value;
+        public double[][] Value = new double[3][];
         public int Length()
         {
             return Value.Length;
