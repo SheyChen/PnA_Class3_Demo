@@ -99,6 +99,30 @@ namespace Coordinate3D
             }
             return result;
         }
+
+        public static Matrix3D InvMatrux(Matrix3D matrix)
+        {
+            Matrix3D result = new Matrix3D();
+            int p = matrix.Value[1].Length;
+            for (int i = 0; i < result.Length(); i++)
+            {
+                result.Value[i] = new double[p];
+            }
+            double detAdd = matrix.Value[0][0] * matrix.Value[1][1] * matrix.Value[2][2] + matrix.Value[0][1] * matrix.Value[1][2] * matrix.Value[2][0] + matrix.Value[0][2] * matrix.Value[1][0] * matrix.Value[2][1];
+            double detDec = matrix.Value[2][0] * matrix.Value[1][1] * matrix.Value[0][2] + matrix.Value[2][1] * matrix.Value[1][2] * matrix.Value[0][0] + matrix.Value[2][2] * matrix.Value[1][0] * matrix.Value[0][1];
+            double det = 1/(detAdd - detDec);
+            result.Value[0][0] = (det) * (matrix.Value[1][1] * matrix.Value[2][2] - matrix.Value[2][1] * matrix.Value[1][2]);
+            result.Value[0][1] = (-det) * (matrix.Value[0][1] * matrix.Value[2][2] - matrix.Value[2][1] * matrix.Value[0][2]);
+            result.Value[0][2] = (det) * (matrix.Value[0][1] * matrix.Value[1][2] - matrix.Value[1][1] * matrix.Value[0][2]);
+            result.Value[1][0] = (-det) * (matrix.Value[1][0] * matrix.Value[2][2] - matrix.Value[2][0] * matrix.Value[1][2]);
+            result.Value[1][1] = (det) * (matrix.Value[0][0] * matrix.Value[2][2] - matrix.Value[2][0] * matrix.Value[0][2]);
+            result.Value[1][2] = (-det) * (matrix.Value[0][0] * matrix.Value[1][2] - matrix.Value[1][0] * matrix.Value[0][2]);
+            result.Value[2][0] = (det) * (matrix.Value[1][0] * matrix.Value[2][1] - matrix.Value[2][0] * matrix.Value[1][1]);
+            result.Value[2][1] = (-det) * (matrix.Value[0][0] * matrix.Value[2][1] - matrix.Value[2][0] * matrix.Value[0][1]);
+            result.Value[2][2] = (det) * (matrix.Value[0][0] * matrix.Value[1][1] - matrix.Value[1][0] * matrix.Value[0][1]);
+            
+            return result;
+        }
     }
 
 }
