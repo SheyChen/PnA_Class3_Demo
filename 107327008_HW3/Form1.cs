@@ -21,7 +21,6 @@ namespace _107327008_HW3
         Matrix3D MatrixAng = new Matrix3D();
         Matrix3D AxisVec = new Matrix3D();
         double[] Arm1P, Arm2P;
-        int i = 1;
 
         public Form1()
         {
@@ -33,7 +32,7 @@ namespace _107327008_HW3
             penGreen = new Pen(Color.Green, 2);
             penBlue = new Pen(Color.Blue, 2);
             penGray = new Pen(Color.Gray, 1);
-            penMag = new Pen(Color.Magenta);
+            penMag = new Pen(Color.Magenta, 3);
             penYellow = new Pen(Color.Yellow, 2);
             myGraph = this.panel_Draw.CreateGraphics();
             CenterPoint = new Point(panel_Draw.Location.X + (panel_Draw.Width / 2), panel_Draw.Location.Y + (panel_Draw.Height / 2));
@@ -46,16 +45,16 @@ namespace _107327008_HW3
             textBox_Arm1_X.Text = "0"; textBox_Arm1_Y.Text = "0"; textBox_Arm1_Z.Text = "100";
             textBox_Arm2_X.Text = "0"; textBox_Arm2_Y.Text = "100"; textBox_Arm2_Z.Text = "0";
             textBox_Arm3_X.Text = "100"; textBox_Arm3_Y.Text = "0"; textBox_Arm3_Z.Text = "0";
-            AxisVec.Value[0] = new double[] { 100, 0, 0 };          //定義初始X座標軸
-            AxisVec.Value[1] = new double[] { 0, 100, 0 };          //定義初始Y座標軸
-            AxisVec.Value[2] = new double[] { 0, 0, 100 };          //定義初始Z座標軸
+            AxisVec.Value[0] = new double[] { 200, 0, 0 };          //定義初始X座標軸
+            AxisVec.Value[1] = new double[] { 0, 200, 0 };          //定義初始Y座標軸
+            AxisVec.Value[2] = new double[] { 0, 0, 200 };          //定義初始Z座標軸
 
         }
         private void Button_PanelInitial_Click(object sender, EventArgs e)
         {
             panel_draw_Paint(sender, null);                                         //讓畫布觸發
-            drawLine(penBlue, 0, 0, 100, 0);                                        //藍色的X軸
-            drawLine(penGreen, 0, 0, 0, 100);                                       //綠色的Y軸
+            drawLine(penBlue, 0, 0, 200, 0);                                        //藍色的X軸
+            drawLine(penGreen, 0, 0, 0, 200);                                       //綠色的Y軸
             drawCircle(penRed, 0, 0, 5);                                            //紅色的Z軸
             Axis_X.Visible = Axis_Y.Visible = true;                                 //開啟坐標軸標示
             Axis_X.Location = new Point(CenterPoint.X + 120, CenterPoint.Y - 10);   //給定標示座標
@@ -63,9 +62,9 @@ namespace _107327008_HW3
             /*-----初始化-----*/
             textBox_Cx.Text = textBox_Cy.Text = textBox_Cr.Text = "0";
             textBox_XAngle.Text = textBox_YAngle.Text = textBox_ZAngle.Text = "0";
-            AxisVec.Value[0] = new double[] { 100, 0, 0 };
-            AxisVec.Value[1] = new double[] { 0, 100, 0 };
-            AxisVec.Value[2] = new double[] { 0, 0, 100 };
+            AxisVec.Value[0] = new double[] { 200, 0, 0 };
+            AxisVec.Value[1] = new double[] { 0, 200, 0 };
+            AxisVec.Value[2] = new double[] { 0, 0, 200 };
             MatrixAng.Value[0] = new double[] { 1, 0, 0 };
             MatrixAng.Value[1] = new double[] { 0, 1, 0 };
             MatrixAng.Value[2] = new double[] { 0, 0, 1 };
@@ -133,11 +132,12 @@ namespace _107327008_HW3
         {
             panel_draw_Paint(sender, null);                                       //讓畫布觸發
             Button_ChangeViewAngle_Click(sender, null);
-            Point3D Arm1 = new Point3D();
-            Arm1.X = Convert.ToDouble(textBox_ArmX.Text);
-            Arm1.Y = Convert.ToDouble(textBox_ArmY.Text);
-            Arm1.Z = Convert.ToDouble(textBox_ArmZ.Text);
-            Arm1P = drawArmOnView(MatrixAng,Arm1);
+            Point3D Arm2_start = new Point3D(0, 0, 0);
+            Point3D Arm2_end = new Point3D(Convert.ToDouble(textBox_Arm2X.Text),
+                                            Convert.ToDouble(textBox_Arm2Y.Text),
+                                            Convert.ToDouble(textBox_Arm2Z.Text));
+            drawArmOnView(MatrixAng, Arm2_start, Arm2_end);
+            drawLine(penMag, Arm2_start.X, Arm2_end.X, Arm2_start.Y, Arm2_end.Y);
         }
 
         private void button_DrawScara_Click(object sender, EventArgs e)
@@ -156,17 +156,29 @@ namespace _107327008_HW3
             s_arm.armb_1 = Coordinate3D.Point3D.Distance(s_arm.Base_pt, s_arm.pt1);
             s_arm.arm1_2 = Coordinate3D.Point3D.Distance(s_arm.pt1, s_arm.pt2);
             s_arm.arm2_3 = Coordinate3D.Point3D.Distance(s_arm.pt2, s_arm.pt3);
-            //DrawScara_Paint(sender, null, s_arm);
+            if (Scara.IsScara(s_arm))
+            {
+                DrawScara_Paint(sender, null, s_arm);
+            }
+            else
+            {
+                MessageBox.Show( "Invalid Scara arm parameters!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                textBox_Arm1_X.Text = "0"; textBox_Arm1_Y.Text = "0"; textBox_Arm1_Z.Text = "100";
+                textBox_Arm2_X.Text = "0"; textBox_Arm2_Y.Text = "100"; textBox_Arm2_Z.Text = "0";
+                textBox_Arm3_X.Text = "100"; textBox_Arm3_Y.Text = "0"; textBox_Arm3_Z.Text = "0";
+            }
         }
 
         private void Button_DrawArm2_Click(object sender, EventArgs e)
         {
-            Point3D Arm2 = new Point3D();
-            Arm2.X = Convert.ToDouble(textBox_Arm2X.Text);
-            Arm2.Y = Convert.ToDouble(textBox_Arm2Y.Text);
-            Arm2.Z = Convert.ToDouble(textBox_Arm2Z.Text);
-            Arm2P =  drawArmOnView(MatrixAng, Arm2);
-            drawLine(penMag,Arm1P[0], Arm1P[1], Arm2P[0], Arm2P[1]);
+            panel_draw_Paint(sender, null);                                       //讓畫布觸發
+            Button_ChangeViewAngle_Click(sender, null);
+            Point3D Arm2_start = new Point3D(0, 0, 0);
+            Point3D Arm2_end = new Point3D(Convert.ToDouble(textBox_Arm2X.Text),
+                                        Convert.ToDouble(textBox_Arm2Y.Text),
+                                        Convert.ToDouble(textBox_Arm2Z.Text));
+            drawArmOnView(MatrixAng, Arm2_start, Arm2_end);
+            drawLine(penMag, Arm2_start.X, Arm2_end.X, Arm2_start.Y, Arm2_end.Y);
         }
 
         public void drawCircle(Pen penX, double centerX, double centerY, double rad)
@@ -210,35 +222,26 @@ namespace _107327008_HW3
             }
             return VectorNew;
         }
-        public double[] drawArmOnView(Matrix3D matA, Point3D ArmP)
+        public void drawArmOnView(Matrix3D matA, Point3D pt_start, Point3D pt_end)
         {
             Matrix3D InvMat = new Matrix3D();
             int rad = 6;
-            double[] Armvec = new double[] { ArmP.X, ArmP.Y, ArmP.Z };
+            double[] arm_start = new double[] { pt_start.X, pt_start.Y, pt_start.Z };
+            double[] arm_end = new double[] { pt_end.X, pt_end.Y, pt_end.Z };
             InvMat = Matrix3D.InvMatrux(matA);
-            double[] viewVec1 = transView(InvMat, Armvec);
-            
-            drawLine(penBlue, 0, 0, viewVec1[0], viewVec1[1]);
-            drawCircle(penRed, viewVec1[0], viewVec1[1], rad);
-            return viewVec1;
+            double[] viewVec_start = transView(InvMat, arm_start);
+            double[] viewVec_end = transView(InvMat, arm_end);           
+            drawLine(penMag, viewVec_start[0], viewVec_start[1], viewVec_end[0], viewVec_end[1]);
+            drawCircle(penRed, viewVec_end[0], viewVec_end[1], rad);
         }
 
-        /*
+        
         private void DrawScara_Paint(object sender, EventArgs e, Scara s_arm)
         {
             panel_draw_Paint(sender, null);
             Button_ChangeViewAngle_Click(sender, null);
-            Point3D Arm1 = new Point3D();
-            Arm1.X = Convert.ToDouble(textBox_ArmX.Text);
-            Arm1.Y = Convert.ToDouble(textBox_ArmY.Text);
-            Arm1.Z = Convert.ToDouble(textBox_ArmZ.Text);
-            Arm1P = drawArmOnView(MatrixAng, Arm1);
-            double[] Arm_Base_vect = new double[] { s_arm.armb_1.X, s_arm.armb_1.Y, s_arm.armb_1.Z };
-            double[] viewVec1 = transView(Arm1P, Arm_Base_vect);
-            drawLine(penBlue, 0, 0, viewVec1[0], viewVec1[1]);
-            drawCircle(penRed, viewVec1[0], viewVec1[1], rad);
-
+            drawArmOnView(MatrixAng, s_arm.Base_pt, s_arm.pt1);
         }
-        */
+
     }
 }
