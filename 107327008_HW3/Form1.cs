@@ -23,7 +23,6 @@ namespace _107327008_HW3
         double[] Arm1P, Arm2P;
         int i = 1;
 
-      
         public Form1()
         {
             InitializeComponent();
@@ -197,25 +196,7 @@ namespace _107327008_HW3
             myGraph.DrawLine(penGray, CenterPoint.X, 0, CenterPoint.X, panel_Draw.Height);
             myGraph.DrawLine(penGray, 0, CenterPoint.Y, panel_Draw.Width, CenterPoint.Y);
         }
-        /*private double[][] MatrixMult(double[][] matrix1, double[][] matrix2)
-        {
-            int m = matrix1.Length, n = matrix2.Length, p = matrix2[0].Length;
-            double[][] result = new double[m][];
-            for (int i = 0; i < result.Length; i++)
-            {
-                result[i] = new double[p];
-            }            for (int i = 0; i < m; i++)
-            {
-                for (int j = 0; j < p; j++)
-                {
-                    for (int k = 0; k < n; k++)
-                    {
-                        result[i][j] += (matrix1[i][k] * matrix2[k][j]);
-                    }
-                }
-            }
-            return result;
-        }  */
+        
         public double[] transView(Matrix3D matA, double[] vectA)
         {
             double[] VectorOut = new double[3];
@@ -231,9 +212,11 @@ namespace _107327008_HW3
         }
         public double[] drawArmOnView(Matrix3D matA, Point3D ArmP)
         {
+            Matrix3D InvMat = new Matrix3D();
             int rad = 6;
             double[] Armvec = new double[] { ArmP.X, ArmP.Y, ArmP.Z };
-            double[] viewVec1 = transView(matA, Armvec);
+            InvMat = Matrix3D.InvMatrux(matA);
+            double[] viewVec1 = transView(InvMat, Armvec);
             
             drawLine(penBlue, 0, 0, viewVec1[0], viewVec1[1]);
             drawCircle(penRed, viewVec1[0], viewVec1[1], rad);
