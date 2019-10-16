@@ -123,6 +123,19 @@ namespace Coordinate3D
             
             return result;
         }
+        public static Matrix3D Matrux_Flip_Symmetric(Matrix3D original_matrix)
+        {
+            Matrix3D ansMatrix = new Matrix3D();
+            ansMatrix = original_matrix;
+            for(int i = 0 ; i < 3 ; i ++)
+            {
+                for (int j = 0; j < 3; j++)
+                {
+                    ansMatrix.Value[i][j] = original_matrix.Value[j][i];
+                }
+            }
+            return ansMatrix;
+        }
     }
 
 }
