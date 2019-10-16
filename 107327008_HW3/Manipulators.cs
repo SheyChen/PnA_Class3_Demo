@@ -45,11 +45,12 @@ namespace Manipulators
         }
         
         //判斷手臂是否符合Puma結構
-        public bool IsPuma()
+        public static bool IsPuma(Puma p_arm)
         {
-            return (Vector3D.IsVertical(this.armb_1, this.arm1_2)
-                && Vector3D.IsVertical(this.arm1_2, this.arm2_3)
-                && Vector3D.IsVertical(this.arm3_4, this.arm1_2)) ? true : false;
+            return (Vector3D.IsVertical(p_arm.armb_1, p_arm.arm1_2)
+                && Vector3D.IsVertical(p_arm.arm1_2, p_arm.arm2_3)
+                && Vector3D.IsVertical(p_arm.arm3_4, p_arm.arm1_2)
+                && p_arm.armb_1.X == 0 && p_arm.armb_1.Y == 0) ? true : false;
         }
         
 
@@ -86,10 +87,11 @@ namespace Manipulators
         }
 
         //判斷手臂是否符合Scara結構
-        public bool IsScara()
+        public static bool IsScara(Scara s_arm)
         {
-            return (Vector3D.IsVertical(this.armb_1, this.arm1_2)
-                    && Vector3D.IsVertical(this.armb_1, this.arm2_3)) ? true : false;
+            return (Vector3D.IsVertical(s_arm.armb_1, s_arm.arm1_2)
+                    && Vector3D.IsVertical(s_arm.armb_1, s_arm.arm2_3)
+                    && s_arm.armb_1.X == 0 && s_arm.armb_1.Y == 0) ? true : false;
         }
     }
     

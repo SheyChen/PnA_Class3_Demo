@@ -140,7 +140,6 @@ namespace _107327008_HW3
             Arm1.Z = Convert.ToDouble(textBox_ArmZ.Text);
             Arm1P = drawArmOnView(MatrixAng,Arm1);
         }
-
         private void button_DrawScara_Click(object sender, EventArgs e)
         {
             Scara s_arm = new Scara();
@@ -157,9 +156,19 @@ namespace _107327008_HW3
             s_arm.armb_1 = Coordinate3D.Point3D.Distance(s_arm.Base_pt, s_arm.pt1);
             s_arm.arm1_2 = Coordinate3D.Point3D.Distance(s_arm.pt1, s_arm.pt2);
             s_arm.arm2_3 = Coordinate3D.Point3D.Distance(s_arm.pt2, s_arm.pt3);
-            //DrawScara_Paint(sender, null, s_arm);
+            if(Scara.IsScara(s_arm))
+            {
+                DrawScara_Paint(sender, null, s_arm);
+            }
+            else
+            {
+                MessageBox.Show("Error", "Invalid Scara arm parameters!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                textBox_Arm1_X.Text = "0"; textBox_Arm1_Y.Text = "0"; textBox_Arm1_Z.Text = "100";
+                textBox_Arm2_X.Text = "0"; textBox_Arm2_Y.Text = "100"; textBox_Arm2_Z.Text = "0";
+                textBox_Arm3_X.Text = "100"; textBox_Arm3_Y.Text = "0"; textBox_Arm3_Z.Text = "0";
+            }
+            
         }
-
         private void Button_DrawArm2_Click(object sender, EventArgs e)
         {
             Point3D Arm2 = new Point3D();
@@ -197,25 +206,6 @@ namespace _107327008_HW3
             myGraph.DrawLine(penGray, CenterPoint.X, 0, CenterPoint.X, panel_Draw.Height);
             myGraph.DrawLine(penGray, 0, CenterPoint.Y, panel_Draw.Width, CenterPoint.Y);
         }
-        /*private double[][] MatrixMult(double[][] matrix1, double[][] matrix2)
-        {
-            int m = matrix1.Length, n = matrix2.Length, p = matrix2[0].Length;
-            double[][] result = new double[m][];
-            for (int i = 0; i < result.Length; i++)
-            {
-                result[i] = new double[p];
-            }            for (int i = 0; i < m; i++)
-            {
-                for (int j = 0; j < p; j++)
-                {
-                    for (int k = 0; k < n; k++)
-                    {
-                        result[i][j] += (matrix1[i][k] * matrix2[k][j]);
-                    }
-                }
-            }
-            return result;
-        }  */
         public double[] transView(Matrix3D matA, double[] vectA)
         {
             double[] VectorOut = new double[3];
@@ -240,7 +230,7 @@ namespace _107327008_HW3
             return viewVec1;
         }
 
-        /*
+        
         private void DrawScara_Paint(object sender, EventArgs e, Scara s_arm)
         {
             panel_draw_Paint(sender, null);
@@ -251,11 +241,11 @@ namespace _107327008_HW3
             Arm1.Z = Convert.ToDouble(textBox_ArmZ.Text);
             Arm1P = drawArmOnView(MatrixAng, Arm1);
             double[] Arm_Base_vect = new double[] { s_arm.armb_1.X, s_arm.armb_1.Y, s_arm.armb_1.Z };
-            double[] viewVec1 = transView(Arm1P, Arm_Base_vect);
-            drawLine(penBlue, 0, 0, viewVec1[0], viewVec1[1]);
-            drawCircle(penRed, viewVec1[0], viewVec1[1], rad);
+            //double[] viewVec1 = transView(Arm1P, Arm_Base_vect);
+            //drawLine(penBlue, 0, 0, viewVec1[0], viewVec1[1]);
+            //drawCircle(penRed, viewVec1[0], viewVec1[1], rad);  
 
         }
-        */
+        
     }
 }
