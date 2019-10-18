@@ -19,8 +19,7 @@ namespace _107327008_HW3
         Rectangle rectCir = new Rectangle(0, 0, 100, 200);
         Point CenterPoint;
         Matrix3D MatrixAng = new Matrix3D();
-        Matrix3D AxisVec = new Matrix3D();
-        Matrix3D InvMat = new Matrix3D();
+        Matrix3D NewAxisVec = new Matrix3D();
         double[] Arm1P, Arm2P;
 
         public Form1()
@@ -46,13 +45,6 @@ namespace _107327008_HW3
             textBox_Arm1_X.Text = "0"; textBox_Arm1_Y.Text = "0"; textBox_Arm1_Z.Text = "100";
             textBox_Arm2_X.Text = "0"; textBox_Arm2_Y.Text = "100"; textBox_Arm2_Z.Text = "0";
             textBox_Arm3_X.Text = "100"; textBox_Arm3_Y.Text = "0"; textBox_Arm3_Z.Text = "0";
-            AxisVec.Value[0] = new double[] { 200, 0, 0 };          //定義初始X座標軸
-            AxisVec.Value[1] = new double[] { 0, 200, 0 };          //定義初始Y座標軸
-            AxisVec.Value[2] = new double[] { 0, 0, 200 };          //定義初始Z座標軸
-            InvMat.Value[0] = new double[] { 1, 0, 0 };
-            InvMat.Value[1] = new double[] { 0, 1, 0 };
-            InvMat.Value[2] = new double[] { 0, 0, 1 };
-
         }
         private void Button_PanelInitial_Click(object sender, EventArgs e)
         {
@@ -66,15 +58,9 @@ namespace _107327008_HW3
             /*-----初始化-----*/
             textBox_Cx.Text = textBox_Cy.Text = textBox_Cr.Text = "0";
             textBox_XAngle.Text = textBox_YAngle.Text = textBox_ZAngle.Text = "0";
-            AxisVec.Value[0] = new double[] { 200, 0, 0 };
-            AxisVec.Value[1] = new double[] { 0, 200, 0 };
-            AxisVec.Value[2] = new double[] { 0, 0, 200 };
             MatrixAng.Value[0] = new double[] { 1, 0, 0 };
             MatrixAng.Value[1] = new double[] { 0, 1, 0 };
             MatrixAng.Value[2] = new double[] { 0, 0, 1 };
-            InvMat.Value[0] = new double[] { 1, 0, 0 };
-            InvMat.Value[1] = new double[] { 0, 1, 0 };
-            InvMat.Value[2] = new double[] { 0, 0, 1 };
         }
         private void Button_ChangeViewAngle_Click(object sender, EventArgs e)
         {
@@ -82,34 +68,39 @@ namespace _107327008_HW3
             double deltXAng, deltYAng, deltZAng;
             double Deg2Rad = Math.PI / 180.0;
 
-            deltXAng = Convert.ToDouble(textBox_XAngle.Text) * -Deg2Rad;
+            Matrix3D AxisVec = new Matrix3D();
+            AxisVec.Value[0] = new double[] { 200, 0, 0 };
+            AxisVec.Value[1] = new double[] { 0, 200, 0 };
+            AxisVec.Value[2] = new double[] { 0, 0, 200 };
+
+            deltXAng = Convert.ToDouble(textBox_XAngle.Text) * Deg2Rad;
             deltYAng = Convert.ToDouble(textBox_YAngle.Text) * Deg2Rad;
             deltZAng = Convert.ToDouble(textBox_ZAngle.Text) * Deg2Rad;
             Matrix3D MatrixAngX = new Matrix3D();                                //宣告X軸的轉換矩陣
             MatrixAngX.Value[0] = new double[] { 1, 0, 0 };
-            MatrixAngX.Value[1] = new double[] { 0, Math.Cos(deltXAng), Math.Sin(deltXAng) };
-            MatrixAngX.Value[2] = new double[] { 0, -Math.Sin(deltXAng), Math.Cos(deltXAng) };
+            MatrixAngX.Value[1] = new double[] { 0, Math.Cos(deltXAng), -Math.Sin(deltXAng) };
+            MatrixAngX.Value[2] = new double[] { 0, Math.Sin(deltXAng), Math.Cos(deltXAng) };
 
             Matrix3D MatrixAngY = new Matrix3D();                                //宣告Y軸的轉換矩陣
-            MatrixAngY.Value[0] = new double[] { Math.Cos(deltYAng), 0, -Math.Sin(deltYAng) };
+            MatrixAngY.Value[0] = new double[] { Math.Cos(deltYAng), 0, Math.Sin(deltYAng) };
             MatrixAngY.Value[1] = new double[] { 0, 1, 0 };
-            MatrixAngY.Value[2] = new double[] { Math.Sin(deltYAng), 0, Math.Cos(deltYAng) };
+            MatrixAngY.Value[2] = new double[] { -Math.Sin(deltYAng), 0, Math.Cos(deltYAng) };
 
             Matrix3D MatrixAngZ = new Matrix3D();                                 //宣告Z軸的轉換矩陣        
-            MatrixAngZ.Value[0] = new double[] { Math.Cos(deltZAng), Math.Sin(deltZAng), 0 };
-            MatrixAngZ.Value[1] = new double[] { -Math.Sin(deltZAng), Math.Cos(deltZAng), 0 };
+            MatrixAngZ.Value[0] = new double[] { Math.Cos(deltZAng), -Math.Sin(deltZAng), 0 };
+            MatrixAngZ.Value[1] = new double[] { Math.Sin(deltZAng), Math.Cos(deltZAng), 0 };
             MatrixAngZ.Value[2] = new double[] { 0, 0, 1 };
 
             Matrix3D MatrixAng2 = new Matrix3D();
-            MatrixAng2 = Matrix3D.MatrixMult(MatrixAngY,MatrixAngZ);
-            MatrixAng2 = Matrix3D.MatrixMult(MatrixAngX,MatrixAng2);        //把三個轉換矩陣乘起來
-            MatrixAng = Matrix3D.MatrixMult( MatrixAng2, MatrixAng);
+            MatrixAng2 = Matrix3D.MatrixMult(MatrixAngX,MatrixAngY);
+            MatrixAng2 = Matrix3D.MatrixMult(MatrixAng2,MatrixAngZ);        //把三個轉換矩陣乘起來
+            MatrixAng = Matrix3D.MatrixMult(MatrixAng, MatrixAng2);
 
-            InvMat = Matrix3D.MatrixMult(InvMat, Matrix3D.InvMatrux(MatrixAng2));
-            AxisVec = Matrix3D.MatrixMult(MatrixAng2, AxisVec);
-            drawLine(penBlue, 0, 0, AxisVec.Value[0][0], AxisVec.Value[0][1]);
-            drawLine(penGreen, 0, 0, AxisVec.Value[1][0], AxisVec.Value[1][1]);
-            drawLine(penYellow, 0, 0, AxisVec.Value[2][0], AxisVec.Value[2][1]);
+            //InvMat = Matrix3D.MatrixMult(InvMat, Matrix3D.InvMatrux(MatrixAng2));
+            NewAxisVec = Matrix3D.MatrixMult(MatrixAng, AxisVec);
+            drawLine(penBlue, 0, 0, NewAxisVec.Value[0][0], NewAxisVec.Value[1][0]);
+            drawLine(penGreen, 0, 0, NewAxisVec.Value[0][1], NewAxisVec.Value[1][1]);
+            drawLine(penYellow, 0, 0, NewAxisVec.Value[0][2], NewAxisVec.Value[1][2]);
 
             textBox_XAngle.Text = textBox_YAngle.Text = textBox_ZAngle.Text = "0";  //初始化
         }
@@ -144,10 +135,8 @@ namespace _107327008_HW3
             Point3D Arm_end = new Point3D(Convert.ToDouble(textBox_ArmX.Text),
                                             Convert.ToDouble(textBox_ArmY.Text),
                                             Convert.ToDouble(textBox_ArmZ.Text));
-            drawArmOnView(InvMat, Arm_start, Arm_end);
-            drawLine(penMag, Arm_start.X, Arm_end.X, Arm_start.Y, Arm_end.Y);
+            drawArmOnView(MatrixAng, Arm_start, Arm_end);
         }
-
         private void button_DrawScara_Click(object sender, EventArgs e)
         {
             Scara s_arm = new Scara();
@@ -176,7 +165,6 @@ namespace _107327008_HW3
                 textBox_Arm3_X.Text = "100"; textBox_Arm3_Y.Text = "0"; textBox_Arm3_Z.Text = "0";
             }
         }
-
         private void Button_DrawArm2_Click(object sender, EventArgs e)
         {
             panel_draw_Paint(sender, null);                                       //讓畫布觸發
@@ -188,7 +176,6 @@ namespace _107327008_HW3
             drawArmOnView(MatrixAng, Arm2_start, Arm2_end);
             drawLine(penMag, Arm2_start.X, Arm2_end.X, Arm2_start.Y, Arm2_end.Y);
         }
-
         public void drawCircle(Pen penX, double centerX, double centerY, double rad)
         {
             int cx = (int)centerX + CenterPoint.X;
@@ -216,7 +203,6 @@ namespace _107327008_HW3
             myGraph.DrawLine(penGray, CenterPoint.X, 0, CenterPoint.X, panel_Draw.Height);
             myGraph.DrawLine(penGray, 0, CenterPoint.Y, panel_Draw.Width, CenterPoint.Y);
         }
-        
         public double[] transView(Matrix3D matA, double[] vectA)
         {
             double[] VectorOut = new double[3];
@@ -230,23 +216,21 @@ namespace _107327008_HW3
             }
             return VectorNew;
         }
-        public void drawArmOnView(Matrix3D InvMat, Point3D pt_start, Point3D pt_end)
+        public void drawArmOnView(Matrix3D Matrix, Point3D pt_start, Point3D pt_end)
         {
             int rad = 6;
             double[] arm_start = new double[] { pt_start.X, pt_start.Y, pt_start.Z };
-            double[] arm_end = new double[] { pt_end.X, pt_end.Y, pt_end.Z };            
-            double[] viewVec_start = transView(InvMat, arm_start);
-            double[] viewVec_end = transView(InvMat, arm_end);           
+            double[] arm_end = new double[] { pt_end.X, pt_end.Y, pt_end.Z };
+            double[] viewVec_start = transView(Matrix, arm_start);
+            double[] viewVec_end = transView(Matrix, arm_end);
             drawLine(penMag, viewVec_start[0], viewVec_start[1], viewVec_end[0], viewVec_end[1]);
             drawCircle(penRed, viewVec_end[0], viewVec_end[1], rad);
         }
-
-        
         private void DrawScara_Paint(object sender, EventArgs e, Scara s_arm)
         {
             panel_draw_Paint(sender, null);
             Button_ChangeViewAngle_Click(sender, null);
-            drawArmOnView(InvMat, s_arm.Base_pt, s_arm.pt1);
+            //drawArmOnView(InvMat, s_arm.Base_pt, s_arm.pt1);
         }
 
     }

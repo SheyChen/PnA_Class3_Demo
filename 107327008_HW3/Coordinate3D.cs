@@ -100,6 +100,25 @@ namespace Coordinate3D
             return result;
         }
 
+        public static Matrix3D MatrixTransfer(Matrix3D matrix)
+        {
+            Matrix3D result = new Matrix3D();
+            int m = matrix.Length(), n = matrix.Value[1].Length;
+            for (int i = 0; i < result.Length(); i++)
+            {
+                result.Value[i] = new double[n];
+            }
+            for(int i = 0; i < m; i++)
+            {
+                for(int j = 0; j < n; j++)
+                {
+                    result.Value[j][i] = matrix.Value[i][j];
+                }
+
+            }
+            return result;
+        }
+
         public static Matrix3D InvMatrux(Matrix3D matrix)
         {
             Matrix3D result = new Matrix3D();
