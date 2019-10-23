@@ -100,6 +100,16 @@ namespace Coordinate3D
             return result;
         }
 
+        //計算3*3方陣乘3*1矩陣
+        public static Vector3D VectorMult(Matrix3D matrix1, Vector3D vector2)
+        {
+            int m = matrix1.Length() , n = matrix1.Value[1].Length;
+            Vector3D result = new Vector3D();
+            result.X = matrix1.Value[0][0] * vector2.X + matrix1.Value[0][1] * vector2.Y + matrix1.Value[0][2] * vector2.Z;
+            result.Y = matrix1.Value[1][0] * vector2.X + matrix1.Value[1][1] * vector2.Y + matrix1.Value[1][2] * vector2.Z;
+            result.Z = matrix1.Value[2][0] * vector2.X + matrix1.Value[2][1] * vector2.Y + matrix1.Value[2][2] * vector2.Z;
+            return result;
+        }
         public static Matrix3D MatrixTransfer(Matrix3D matrix)
         {
             Matrix3D result = new Matrix3D();

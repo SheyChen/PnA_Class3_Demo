@@ -20,6 +20,7 @@ namespace _107327008_HW3
         Point CenterPoint;
         Matrix3D MatrixAng = new Matrix3D();
         Matrix3D NewAxisVec = new Matrix3D();
+        double Xang, Yang, Zang;
         double[] Arm1P, Arm2P;
 
         public Form1()
@@ -45,6 +46,10 @@ namespace _107327008_HW3
             textBox_Arm1_X.Text = "0"; textBox_Arm1_Y.Text = "0"; textBox_Arm1_Z.Text = "100";
             textBox_Arm2_X.Text = "0"; textBox_Arm2_Y.Text = "100"; textBox_Arm2_Z.Text = "0";
             textBox_Arm3_X.Text = "100"; textBox_Arm3_Y.Text = "0"; textBox_Arm3_Z.Text = "0";
+            Xang = Yang = Zang = 0.0;
+            label_XAng.Text = "(X軸已旋轉" + Xang.ToString() + "度)";
+            label_YAng.Text = "(Y軸已旋轉" + Yang.ToString() + "度)";
+            label_ZAng.Text = "(Z軸已旋轉" + Zang.ToString() + "度)";
         }
         private void Button_PanelInitial_Click(object sender, EventArgs e)
         {
@@ -61,6 +66,10 @@ namespace _107327008_HW3
             MatrixAng.Value[0] = new double[] { 1, 0, 0 };
             MatrixAng.Value[1] = new double[] { 0, 1, 0 };
             MatrixAng.Value[2] = new double[] { 0, 0, 1 };
+            Xang = Yang = Zang = 0.0;
+            label_XAng.Text = "(X軸已旋轉" + Xang.ToString() + "度)";
+            label_YAng.Text = "(Y軸已旋轉" + Yang.ToString() + "度)";
+            label_ZAng.Text = "(Z軸已旋轉" + Zang.ToString() + "度)";
         }
         private void Button_ChangeViewAngle_Click(object sender, EventArgs e)
         {
@@ -102,6 +111,12 @@ namespace _107327008_HW3
             drawLine(penGreen, 0, 0, NewAxisVec.Value[0][1], NewAxisVec.Value[1][1]);
             drawLine(penYellow, 0, 0, NewAxisVec.Value[0][2], NewAxisVec.Value[1][2]);
 
+            Xang = Xang + Convert.ToDouble(textBox_XAngle.Text);
+            Yang = Yang + Convert.ToDouble(textBox_YAngle.Text);
+            Zang = Zang + Convert.ToDouble(textBox_ZAngle.Text);
+            label_XAng.Text = "(X軸已旋轉" + Xang.ToString() + "度)";
+            label_YAng.Text = "(Y軸已旋轉" + Yang.ToString() + "度)";
+            label_ZAng.Text = "(Z軸已旋轉" + Zang.ToString() + "度)";
             textBox_XAngle.Text = textBox_YAngle.Text = textBox_ZAngle.Text = "0";  //初始化
         }
         private void Button_DrawCircle_Click(object sender, EventArgs e)
@@ -137,6 +152,50 @@ namespace _107327008_HW3
                                             Convert.ToDouble(textBox_ArmZ.Text));
             drawArmOnView(MatrixAng, Arm_start, Arm_end);
         }
+        private void Button_ArmMove_Click(object sender, EventArgs e)
+        {
+            panel_draw_Paint(sender, null);                                       //讓畫布觸發
+            Button_ChangeViewAngle_Click(sender, null);
+            Point3D Arm_start = new Point3D(0, 0, 0);
+            textBox_Arm2X.Text = (Convert.ToDouble(textBox_ArmX.Text) + Convert.ToDouble(textBox_MoveArmX.Text)).ToString();
+            textBox_Arm2Y.Text = (Convert.ToDouble(textBox_ArmY.Text) + Convert.ToDouble(textBox_MoveArmY.Text)).ToString();
+            textBox_Arm2Z.Text = (Convert.ToDouble(textBox_ArmZ.Text) + Convert.ToDouble(textBox_MoveArmZ.Text)).ToString();
+
+            double deltXAng, deltYAng, deltZAng;
+            double Deg2Rad = Math.PI / 180.0;
+            Vector3D NewArm = new Vector3D();
+            NewArm.X = Convert.ToDouble(textBox_Arm2X.Text);
+            NewArm.Y = Convert.ToDouble(textBox_Arm2Y.Text);
+            NewArm.Z = Convert.ToDouble(textBox_Arm2Z.Text);
+
+            deltXAng = Convert.ToDouble(textBox_MoveArmXang.Text) * Deg2Rad;
+            deltYAng = Convert.ToDouble(textBox_MoveArmYang.Text) * Deg2Rad;
+            deltZAng = Convert.ToDouble(textBox_MoveArmZang.Text) * Deg2Rad;
+            Matrix3D MatrixAngX = new Matrix3D();                                //宣告X軸的轉換矩陣
+            MatrixAngX.Value[0] = new double[] { 1, 0, 0 };
+            MatrixAngX.Value[1] = new double[] { 0, Math.Cos(deltXAng), -Math.Sin(deltXAng) };
+            MatrixAngX.Value[2] = new double[] { 0, Math.Sin(deltXAng), Math.Cos(deltXAng) };
+
+            Matrix3D MatrixAngY = new Matrix3D();                                //宣告Y軸的轉換矩陣
+            MatrixAngY.Value[0] = new double[] { Math.Cos(deltYAng), 0, Math.Sin(deltYAng) };
+            MatrixAngY.Value[1] = new double[] { 0, 1, 0 };
+            MatrixAngY.Value[2] = new double[] { -Math.Sin(deltYAng), 0, Math.Cos(deltYAng) };
+
+            Matrix3D MatrixAngZ = new Matrix3D();                                 //宣告Z軸的轉換矩陣        
+            MatrixAngZ.Value[0] = new double[] { Math.Cos(deltZAng), -Math.Sin(deltZAng), 0 };
+            MatrixAngZ.Value[1] = new double[] { Math.Sin(deltZAng), Math.Cos(deltZAng), 0 };
+            MatrixAngZ.Value[2] = new double[] { 0, 0, 1 };
+
+            Matrix3D MatrixAng2 = new Matrix3D();
+            MatrixAng2 = Matrix3D.MatrixMult(MatrixAngX, MatrixAngY);
+            MatrixAng2 = Matrix3D.MatrixMult(MatrixAng2, MatrixAngZ);        //把三個轉換矩陣乘起來
+            NewArm = Matrix3D.VectorMult(MatrixAng2, NewArm);
+            textBox_Arm2X.Text = (Convert.ToInt32(NewArm.X)).ToString();
+            textBox_Arm2Y.Text = (Convert.ToInt32(NewArm.Y)).ToString();
+            textBox_Arm2Z.Text = (Convert.ToInt32(NewArm.Z)).ToString();
+            Point3D Arm_end = new Point3D(NewArm.X, NewArm.Y, NewArm.Z);
+            drawArmOnView(MatrixAng, Arm_start, Arm_end);
+        }
         private void button_DrawScara_Click(object sender, EventArgs e)
         {
             Scara s_arm = new Scara();
@@ -164,17 +223,36 @@ namespace _107327008_HW3
                 textBox_Arm2_X.Text = "0"; textBox_Arm2_Y.Text = "100"; textBox_Arm2_Z.Text = "0";
                 textBox_Arm3_X.Text = "100"; textBox_Arm3_Y.Text = "0"; textBox_Arm3_Z.Text = "0";
             }
-        }
-        private void Button_DrawArm2_Click(object sender, EventArgs e)
+        }            
+        private void Button_YAdd_Click(object sender, EventArgs e)
         {
-            panel_draw_Paint(sender, null);                                       //讓畫布觸發
+            textBox_YAngle.Text = (Convert.ToDouble(textBox_YAngle.Text) + 1).ToString();
             Button_ChangeViewAngle_Click(sender, null);
-            Point3D Arm2_start = new Point3D(0, 0, 0);
-            Point3D Arm2_end = new Point3D(Convert.ToDouble(textBox_Arm2X.Text),
-                                        Convert.ToDouble(textBox_Arm2Y.Text),
-                                        Convert.ToDouble(textBox_Arm2Z.Text));
-            drawArmOnView(MatrixAng, Arm2_start, Arm2_end);
-            drawLine(penMag, Arm2_start.X, Arm2_end.X, Arm2_start.Y, Arm2_end.Y);
+        }
+        private void Button_YSub_Click(object sender, EventArgs e)
+        {
+            textBox_YAngle.Text = (Convert.ToDouble(textBox_YAngle.Text) - 1).ToString();
+            Button_ChangeViewAngle_Click(sender, null);
+        }
+        private void Button_ZAdd_Click(object sender, EventArgs e)
+        {
+            textBox_ZAngle.Text = (Convert.ToDouble(textBox_ZAngle.Text) + 1).ToString();
+            Button_ChangeViewAngle_Click(sender, null);
+        }
+        private void Button_ZSub_Click(object sender, EventArgs e)
+        {
+            textBox_ZAngle.Text = (Convert.ToDouble(textBox_ZAngle.Text) - 1).ToString();
+            Button_ChangeViewAngle_Click(sender, null);
+        }
+        private void Button_XAdd_Click(object sender, EventArgs e)
+        {
+            textBox_XAngle.Text = (Convert.ToDouble(textBox_XAngle.Text) + 1).ToString();
+            Button_ChangeViewAngle_Click(sender, null);
+        }
+        private void Button_XSub_Click(object sender, EventArgs e)
+        {
+            textBox_XAngle.Text = (Convert.ToDouble(textBox_XAngle.Text) - 1).ToString();
+            Button_ChangeViewAngle_Click(sender, null);
         }
         public void drawCircle(Pen penX, double centerX, double centerY, double rad)
         {
